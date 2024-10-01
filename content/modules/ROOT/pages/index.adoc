@@ -6,7 +6,9 @@ In this lab you will learn how to evolve your containers into full fledged opera
 
 === Lab Access
 
-You can access the lab via `ssh` from a terminal on your local machine or via the web based terminal provided. You can use the slider in the middle of the screen to resize the terminal and instruction panes.
+You can access the lab via `ssh` from a terminal on your local machine. 
+
+If you are on a Windows machine that does not have a native SSH client, you can download PuTTY from https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html[the project website] as an executable rather than an installer or from https://apps.microsoft.com/detail/xpfnzksklbp7rj?hl=en-us&gl=US[the Microsoft Store].
 
 [source,sh,subs=attributes+]
 ----
