@@ -56,19 +56,20 @@ The output from the command above should be similar to the following:
 
 ....
 git status
-On branch master
-Your branch is up to date with 'origin/master'.
+On branch rh1-lab
+Your branch is up to date with 'origin/rh1-lab'.
 
 nothing to commit, working tree clean
 podman login --get-login registry.redhat.io
-cgament@redhat.com
+1979710|rhel-tmm
 podman image exists "registry.redhat.io/rhel9/rhel-bootc:9.4"
-podman image exists "quay.io/centos-bootc/bootc-image-builder:latest"
-     Active: active (running) since Wed 2024-05-01 17:13:37 EDT; 55s ago
+podman image exists "registry.redhat.io/rhel9/bootc-image-builder:latest"
+     Active: inactive (dead)
  Id   Name   State
 --------------------
 
 net.ipv4.ip_unprivileged_port_start = 80
-ID            NAME             CPU %       MEM USAGE / LIMIT  MEM %       NET IO            BLOCK IO    PIDS        CPU TIME    AVG CPU %
-fa77d569b19f  summit-registry  0.05%       17.9MB / 67.3GB    0.03%       3.88kB / 1.888kB  0B / 0B     20          18.923277s  0.05%
+ID            NAME        CPU %       MEM USAGE / LIMIT  MEM %       NET IO          BLOCK IO    PIDS        CPU TIME    AVG CPU %
+dba45d693db0  registry    0.01%       13.03MB / 8.056GB  0.16%       2.774kB / 908B  0B / 0B     5           28.016ms    0.01%
+Starting Containerfile available
 ....

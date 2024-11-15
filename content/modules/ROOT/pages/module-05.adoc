@@ -150,6 +150,8 @@ treated it as local machine state. So the change in the Containerfile wasn't app
 Since we want to control everything about our webserver from the image, we'll need to make some changes 
 to where we put content and how we serve it in Apache.
 
+You can use the `Code editor` tab or `vim` in the Terminal to edit the Containerfile to match the following:
+
 [source,dockerfile]
 ----
 FROM registry.redhat.io/rhel9/rhel-bootc:9.4
@@ -182,6 +184,8 @@ Rebuild the image with our new configuration and index page. Since this is a reb
 existing layers if there are no changes. This makes updates faster and take less space. Notice the push to the registry also 
 only pushes those layers that contain changes.
 
+If you used the `Code editor` to change the Containerfile, be sure to return to the `Terminal` tab now.
+
 [source,bash]
 ----
 podman build --file Containerfile --tag $REGISTRY/bootc
@@ -196,7 +200,7 @@ podman push $REGISTRY/bootc
 [#update2-vm]
 == Updating the virtual machine
 
-Now you can return the virtual machine tab and log in via ssh
+Now you can return the `SSH QCOW VM` tab and hit refresh to log in via ssh.
 
 Previously, we checked for an update, downloaded and staged it locally to be activated, then manually rebooted 
 the system to have the update take effect. This is a very good procedure for a manual update or in places 
@@ -243,7 +247,7 @@ Connection to qcow-vm closed.
 [#testing]
 == Testing the changes
 
-We can check for our new web page from the lab host (`[lab-user@hypervisor rh-summit-2024-lb1506]$`):
+We can check for our new web page from the `Terminal` tab (`[root@rhel rh-summit-2024-lb1506]$`):
 
 [source,console]
 ----

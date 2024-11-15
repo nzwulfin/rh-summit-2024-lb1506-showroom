@@ -13,25 +13,18 @@ the creation of the bootc image. This can be useful in certain cases where parti
 These users and credentials would be tied to the image, which means controlling how secrets are used in the build are important to understand before going 
 down this path. You will want to explore more before making this choice in your own environment.
 
-On the host system (make sure the prompt shows `[lab-user@hypervisor rh-summit-2024-lb1506]$`), and are in the `rh-summit-2024-lb1506` directory
-
-[source,bash]
-----
-cd ~/rh-summit-2024-lb1506
-----
-
 [#secrets]
 == Using podman secrets at build time
 
 We will use an addtional feature of `podman` to get the credentials we want to embed passed to the image safely.
 
-You can now edit the `Containerfile` to match the following:
+You can now edit the `Containerfile` using the `Code editor` to match the following:
+
+NOTE: Be sure you've selected the `/root/rh-summit-2024-lb1506/Containerfile` in the file picker
 
 [source,dockerfile]
 ----
 FROM registry.redhat.io/rhel9/rhel-bootc:9.4
-
-COPY certs/004-summit.conf /etc/containers/registries.conf.d/004-summit.conf
 
 COPY templates/30-auth-system.conf /etc/ssh/sshd_config.d/30-auth-system.conf # <1>
 RUN mkdir -p /usr/ssh # <2>
@@ -62,7 +55,7 @@ We're also going to use a new tag for this image, like we did in the previous `b
 
 [source,bash]
 ----
-podman build --secret id=SSHPUBKEY,src=/home/lab-user/.ssh/id_rsa.pub --file Containerfile --tag $REGISTRY/bootc-auth
+podman build --secret id=SSHPUBKEY,src=/root/.ssh/id_rsa.pub --file Containerfile --tag $REGISTRY/bootc-auth
 ----
 
 And make sure to push it to the registry:
@@ -91,11 +84,13 @@ In the `Terminal` tab, you will need to have the full registry name for the foll
 echo $REGISTRY
 ----
 
-We can change to our new image with the embedded `root` credentials, substitute the full hostname from the `Terminal` here.
+Switch to the `SSH QCOW VM` tab to change the image the host is tracking.
+
+We can change to our new image with the embedded `root` credentials, substitute the full hostname from the `Terminal` for `your-reg-name` here.
 
 [source,bash]
 ----
-sudo bootc switch $REGISTRY/bootc-auth
+sudo bootc switch your-reg-name/bootc-auth
 ----
 
 The output should look something like this:

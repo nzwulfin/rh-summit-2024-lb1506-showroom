@@ -26,7 +26,7 @@ In the `Terminal` tab, you will need to have the full registry name to add to th
 echo $REGISTRY
 ----
 
-In the `Code editor` tab, select the examples directory and then the Containerfile.wp.
+In the `Code editor` tab file picker, select the `examples/wordpress-quadlet/` directory and then the Containerfile.wp.
 
 Using container tooling to create images let's us take advantage of layers and inheritance in our standard 
 build process. Different teams and work directly from images built by others, rather than by integrating after 
@@ -34,10 +34,10 @@ the fact. Notice our `FROM` line is the image you've been working on throughout 
 bit of customization and software you've installed previously will be available on the host built from this new 
 definition. 
 
-Update the `FROM` line in the Containerfile to reflect the registry host in your lab environment.
+Update the `FROM` line in the Containerfile to reflect the registry host in your lab environment: $REGISTRY/bootc
 [source,dockerfile]
 ----
-FROM $REGISTRY/bootc
+FROM summit.registry/lb1506:bootc
 
 RUN dnf -y install lynx
 
@@ -81,7 +81,7 @@ Remember the format for the `--tag` flag is `<registry>/<repository>:<tag>`.
 
 [source,bash]
 ----
-podman build --file Containerfile.wp --tag $REGISTRY/bootc-wp
+podman build --file examples/wordpress-quadlet/Containerfile.wp --tag $REGISTRY/bootc-wp
 ----
 
 And of course push it to the local registry:
@@ -94,6 +94,12 @@ podman push $REGISTRY/bootc-wp
 Notice that even though we used a new tag for this image, the push still used cached layers. This is an advantage of stacking images in a standard 
 build design.
 
+You will need to have the full registry name for the next exercise.
+
+[source,bash]
+----
+echo $REGISTRY
+----
 
 
 [#switch-run]
@@ -104,14 +110,15 @@ After the new container image has been pushed to the local registry, you can `sw
 `bootc` command is how we change what image to follow for updates. From here on, any changes made to the orginal `bootc` tagged image 
 would not show up as an available update, only changes to the new `bootc-wp` image.
 
+Replace the string `your-reg-name` below with the value of the environment variable in the `Terminal` tab.
 [source,bash]
 ----
-sudo bootc switch $REGISTRY/bootc-wp
+sudo bootc switch your-reg-name/bootc-wp
 ----
 
 As usual, after the command is done you need to reboot the virtual machine
 for the changes to take effect. Before doing that, please make sure you are logged in to the
-virtual machine and not the hypervisor (the prompt should look like `[lab-user@qcow-vm ~]#`):
+virtual machine tab and not the `Terminal` (the prompt should look like `[lab-user@localhost ~]#`):
 
 [source,bash]
 ----
@@ -128,15 +135,29 @@ Check on the status of our newly created quadlet by checking the caddy proxy ser
 [source,bash]
 ----
 sudo systemctl status caddy.service
+----
+
+After the container is pulled and the service attempts to start you will see:
+....
+Nov 15 19:21:10 localhost.localdomain systemd[1]: Failed to start Caddy Quadlet.
+Nov 15 19:21:10 localhost.localdomain systemd[1]: caddy.service: Scheduled restart job, restart counter is at 7.
+Nov 15 19:21:10 localhost.localdomain systemd[1]: Stopped Caddy Quadlet.
+Nov 15 19:21:10 localhost.localdomain systemd[1]: caddy.service: Start request repeated too quickly.
+Nov 15 19:21:10 localhost.localdomain systemd[1]: caddy.service: Failed with result 'exit-code'.
+Nov 15 19:21:10 localhost.localdomain systemd[1]: Failed to start Caddy Quadlet.
+....
+
+Check the journal to see why the unit failed.
+[source,bash]
+----
 sudo journalctl -t caddy
 ----
-....
-Jul 24 14:40:30 qcow-vm systemd[1]: caddy.service: Failed with result 'exit-code'.
-Jul 24 14:40:30 qcow-vm systemd[1]: Failed to start Caddy Quadlet.
 
+....
 Jul 24 14:40:25 qcow-vm caddy[1347]: Error: cannot listen on the TCP port: listen tcp4 :80: 
 Jul 24 14:40:27 qcow-vm caddy[1780]: Error: cannot listen on the TCP port: listen tcp4 :80:
 ....
+
 
 We weren't prompted for our sudo password, but it looks like our new caddy server couldn't bind to port 80 
 when it tried to start.  What's going on? The answer to both lies in the image we built from. 

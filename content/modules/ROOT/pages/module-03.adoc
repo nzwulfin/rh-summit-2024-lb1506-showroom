@@ -44,12 +44,15 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAuXnpoluye+KM+9tvIAdHf+F0IHh+K73tlcjEG8LJRB
 You can now create a file called `config-qcow2.json` with the following contents, replacing "SSHKEY" 
 in the `key` field with the contents of `~/.ssh/id_rsa.pub` from your system:
 
+You can also use the `Code editor` tab to make the following changes, you can create a new file by clicking the 
+button to the right of the directory name `/root/rh-summit-2024-lb1506`.
+
 [source,bash]
 ----
-touch config-qcow2.json
+vim config-qcow2.json
 ----
 
-You can use the `Code editor` to make the following changes, you may need to click the refresh icon above the directory listing on the left side of the editor.
+
 [source,json]
 ----
 {
@@ -95,7 +98,7 @@ To convert from an OCI image to a disk image, we have a special version of image
 
 Try to generate the image now:
 
-NOTE: This could take 4+ minutes to complete.
+NOTE: This could take 5+ minutes to complete.
 [source,bash]
 ----
 podman run --rm --privileged \

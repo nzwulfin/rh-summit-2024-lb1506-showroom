@@ -16,20 +16,14 @@ we'll focus on creating a boot ISO that includes the kickstart, mainly for local
 Anaconda via kickstart will be the same, regardless of how they are presented to the host being installed.
 
 The starting iso image should have been already downloaded at the setup phase at the beginning of this workshop. You can check it exists
-by listing the file `/var/lib/libvirt/images/summit/rhel-boot.iso` as root:
+by listing the file `/var/lib/libvirt/images/summit/rhel-boot.iso`
 
 [source,bash]
 ----
-sudo ls -lah /var/lib/libvirt/images/summit/rhel-boot.iso
+ls -lah /var/lib/libvirt/images/summit/rhel-boot.iso
 ----
 
 If it is missing, you can redownload it by calling `make iso-download`.
-
-Next, make sure you have pushed the bootc container image to the local registry:
-
-----
-podman push $REGISTRY/bootc
-----
 
 The actual generation of the custom `iso` image is out of scope for this workshop, so we are providing a make command to do so. This 
 custom ISO will contain not the original boot image, but our kickstart file and the bootc image we want installed on the host. These 
@@ -40,10 +34,10 @@ sort of all in one installers can be very useful for bare metal, especially in p
 make iso CONTAINER=$REGISTRY/bootc
 ----
 
-At the end of the run, you should be able to list the file `/var/lib/libvirt/images/summit/rhel-boot-custom.iso` as root:
+At the end of the run, you should be able to list the file `/var/lib/libvirt/images/summit/rhel-boot-custom.iso`:
 
 ----
-sudo ls -lah /var/lib/libvirt/images/summit/rhel-boot-custom.iso
+ls -lah /var/lib/libvirt/images/summit/rhel-boot-custom.iso
 ----
 
 *For reference*, the script used to embed and build the custom ISO can be found in `bin/embed-container` and it can
@@ -126,6 +120,7 @@ make vm-iso
 The command above will start the installation process and you should see the console of a newly created virtual machine
 booting from the custom iso. Watch for the Anaconda output as it proceeds with the unattended install. 
 
+NOTE: This will take several minutes to complete
 ....
 Powering off.
 [   65.973246] reboot: Power down

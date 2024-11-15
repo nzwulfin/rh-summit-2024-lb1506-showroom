@@ -57,6 +57,8 @@ Let's talk about the effects of these changes:
 [#build]
 == Build the first bootc image
 
+Return to the `Terminal` tab to build the images.
+
 NOTE: as the registry hostnames in the lab are dynamic, an environment variable will be used instead of a hostname for the registry in all examples. 
 
 As with application containers, you can build this container with standard tools:
