@@ -19,23 +19,25 @@ those to be containerized? Image mode hosts are suitable for a wide range of use
 applications, and acting as a container host is one of those. In fact, the work that preceeded image mode was 
 largely focused on the role of container hosting. 
 
-On the host system (make sure the prompt shows `[lab-user@hypervisor rh-summit-2024-lb1506]$`), you can
-change to the `wordpress-quadlet` directory to examine the new Containerfile.
+In the `Terminal` tab, you will need to have the full registry name to add to the Containerfile we are about to edit.
 
 [source,bash]
 ----
-cd examples/wordpress-quadlet
-cat Containerfile.wp
+echo $REGISTRY
 ----
+
+In the `Code editor` tab, select the examples directory and then the Containerfile.wp.
+
 Using container tooling to create images let's us take advantage of layers and inheritance in our standard 
 build process. Different teams and work directly from images built by others, rather than by integrating after 
 the fact. Notice our `FROM` line is the image you've been working on throughout the lab. This means that every 
 bit of customization and software you've installed previously will be available on the host built from this new 
 definition. 
 
+Update the `FROM` line in the Containerfile to reflect the registry host in your lab environment.
 [source,dockerfile]
 ----
-FROM summit.registry/lb1506:bootc
+FROM $REGISTRY:bootc
 
 RUN dnf -y install lynx
 
@@ -46,8 +48,7 @@ ADD usr/ /usr
 For an 'advanced` configuration, this doesn't have a lot of content, what's happening?
 
 Remember the `ADD` directive pulls full directories into the image at build time. So all of the work here is 
-somehow being done in `/usr` or `/etc`, let's see what's in there.
-
+somehow being done in `/usr` or `/etc`, let's see what's in there. You can return to the `Terminal` tab to see the files with the `ls` command below, or use the `Code editor` to review them.
 
 [source,bash]
 ----
@@ -67,6 +68,7 @@ Feel free to explore these files and directories before moving on.
 
 [#build]
 == Build and push the image
+NOTE: Be sure you are in the `Terminal` tab for this part of the exercise
 
 When we build this image, we will use a new tag. You may have noticed in the previous exercises, the name of the image has stayed the same. 
 Tags are how `bootc` keeps track of images, which is why each of the previous changes we made showed up as updates. 
@@ -79,28 +81,24 @@ Remember the format for the `--tag` flag is `<registry>/<repository>:<tag>`.
 
 [source,bash]
 ----
-podman build --file Containerfile.wp --tag summit.registry/lb1506:bootc-wp
+podman build --file Containerfile.wp --tag $REGISTRY:bootc-wp
 ----
 
 And of course push it to the local registry:
 
 [source,bash]
 ----
-podman push summit.registry/lb1506:bootc-wp
+podman push $REGISTRY:bootc-wp
 ----
 
 Notice that even though we used a new tag for this image, the push still used cached layers. This is an advantage of stacking images in a standard 
 build design.
 
-You can now login to the virtual machine:
 
-[source,bash]
-----
-ssh lab-user@qcow-vm
-----
 
 [#switch-run]
 == Switch and test the image
+You can now login to the virtual machine via the `SSH QCOW VM` tab.
 
 After the new container image has been pushed to the local registry, you can `switch` the bootc image to the WordPress one. This 
 `bootc` command is how we change what image to follow for updates. From here on, any changes made to the orginal `bootc` tagged image 
@@ -108,7 +106,7 @@ would not show up as an available update, only changes to the new `bootc-wp` ima
 
 [source,bash]
 ----
-sudo bootc switch summit.registry/lb1506:bootc-wp
+sudo bootc switch $REGISTRY:bootc-wp
 ----
 
 As usual, after the command is done you need to reboot the virtual machine
@@ -120,12 +118,7 @@ virtual machine and not the hypervisor (the prompt should look like `[lab-user@q
 sudo systemctl reboot
 ----
 
-After a short while, you can log back in to the virtual machine:
-
-[source,bash]
-----
-ssh lab-user@qcow-vm
-----
+After a short while, you can log back in to the virtual machine via the `SSH QCOW VM` tab.
 
 [#layers]
 == Troubleshooting layered builds
@@ -190,13 +183,6 @@ lynx localhost
 You should see the WordPress configuration dialog box. You can hit `Q` (Shift + q) to quit lynx.
 
 Feel free to explore the virtual machine before moving on to the next section.
-
-Before proceeding, make sure you have logged out of the virtual machine:
-
-[source,bash]
-----
-logout
-----
 
 Easy updates, rollbacks, and image switching are part of the core improvements to the operation of 
 image mode systems. Layering is an important part of the design of standard builds and can have some 

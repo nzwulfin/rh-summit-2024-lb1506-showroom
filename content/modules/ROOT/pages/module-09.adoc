@@ -28,7 +28,7 @@ If it is missing, you can redownload it by calling `make iso-download`.
 Next, make sure you have pushed the bootc container image to the local registry:
 
 ----
-podman push summit.registry/lb1506:bootc
+podman push $REGISTRY:bootc
 ----
 
 The actual generation of the custom `iso` image is out of scope for this workshop, so we are providing a make command to do so. This 
@@ -37,7 +37,7 @@ sort of all in one installers can be very useful for bare metal, especially in p
 
 [source,bash]
 ----
-make iso CONTAINER=summit.registry/lb1506:bootc
+make iso CONTAINER=$REGISTRY:bootc
 ----
 
 At the end of the run, you should be able to list the file `/var/lib/libvirt/images/summit/rhel-boot-custom.iso` as root:
@@ -53,7 +53,7 @@ be replicated with the following steps (*no need to run these commands*):
 
 +
 ----
-skopeo copy "docker://summit.registry/lb1506:bootc" "oci:${TEMPDIR}/container/"
+skopeo copy "docker://$REGISTRY:bootc" "oci:${TEMPDIR}/container/"
 ----
 
   2. generate a Kickstart file (more details below)
@@ -158,16 +158,12 @@ Like with the previous virtual machine created, you can directly see if the http
 
 [source,bash]
 ----
-curl http://iso-vm
+curl http://iso
 ----
 
 The output should be "Hello Red Hat Summit Connect 2024!!"
 
-You should also be able to login to the virtual machine:
-
-----
-ssh lab-user@iso-vm
-----
+You should also be able to login to the virtual machine via the `SSH ISO VM` tab. 
 
 If the ssh key is not automatically picked up, use the password `lb1506`.
 
@@ -240,7 +236,7 @@ the registry to the host. We need to be sure to use `sudo` to copy into the syst
 
 [source,bash]
 ----
-sudo skopeo copy --tls-verify=false docker://summit.registry/lb1506:bootc  containers-storage:summit.registry/lb1506:bootc 
+sudo skopeo copy --tls-verify=false docker://$REGISTRY:bootc  containers-storage:$REGISTRY:bootc 
 ----
 
 Switch our installation to use the new container image, using the `--transport` flag to let bootc know we want to use local 
@@ -248,12 +244,12 @@ container storage for this operation.
 
 [source,bash]
 ----
-sudo bootc switch --transport containers-storage summit.registry/lb1506:bootc
+sudo bootc switch --transport containers-storage $REGISTRY:bootc
 ----
 
 ....
 Loading usr/lib/ostree/prepare-root.conf
-Queued for next boot: ostree-unverified-image:containers-storage:summit.registry/lb1506:bootc
+Queued for next boot: ostree-unverified-image:containers-storage:$REGISTRY:bootc
   Version: 9.20240501.0
   Digest: sha256:0a3daed6e31c2f2917e17ea994059e1aaee0481fe16836c118c5e1d10a87365c
 ....
@@ -268,14 +264,7 @@ virtual machine and not the hypervisor (the prompt should look like `[lab-user@l
 sudo systemctl reboot
 ----
 
-In a short time after that command, you should be able to ssh back to the virtual machine:
-
-[source,bash]
-----
-ssh lab-user@iso-vm
-----
-
-And check the bootc status:
+In a short time after that command, you should be able to ssh back to the virtual machine via the `SSH ISO VM` tab and check the bootc status:
 
 [source,bash]
 ----
@@ -290,7 +279,7 @@ metadata:
   name: host
 spec:
   image:
-    image: summit.registry/lb1506:bootc
+    image: $REGISTRY:bootc
     transport: containers-storage
   bootOrder: default
 status:
@@ -298,7 +287,7 @@ status:
   booted:
     image:
       image:
-        image: summit.registry/lb1506:bootc
+        image: $REGISTRY:bootc
         transport: containers-storage
       version: 9.20240501.0
       timestamp: null

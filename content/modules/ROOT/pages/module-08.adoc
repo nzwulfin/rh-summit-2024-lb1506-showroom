@@ -62,14 +62,14 @@ We're also going to use a new tag for this image, like we did in the previous `b
 
 [source,bash]
 ----
-podman build --secret id=SSHPUBKEY,src=/home/lab-user/.ssh/id_rsa.pub --file Containerfile --tag summit.registry/lb1506:bootc-auth
+podman build --secret id=SSHPUBKEY,src=/home/lab-user/.ssh/id_rsa.pub --file Containerfile --tag $REGISTRY:bootc-auth
 ----
 
 And make sure to push it to the registry:
 
 [source,bash]
 ----
-podman push summit.registry/lb1506:bootc-auth
+podman push $REGISTRY:bootc-auth
 ----
 
 [#switch-creds]
@@ -84,18 +84,18 @@ virsh --connect qemu:///system list
 
 And the output should contain a virtual machine called `qcow`.
 
-Now you can ssh into the virtual machine
+In the `Terminal` tab, you will need to have the full registry name for the following commands in the VM ssh session.
 
 [source,bash]
 ----
-ssh lab-user@qcow-vm
+echo $REGISTRY
 ----
 
-We can change to our new image with the embedded `root` credentials
+We can change to our new image with the embedded `root` credentials, substitute the full hostname from the `Terminal` here.
 
 [source,bash]
 ----
-sudo bootc switch summit.registry/lb1506:bootc-auth
+sudo bootc switch $REGISTRY:bootc-auth
 ----
 
 The output should look something like this:
@@ -104,7 +104,7 @@ The output should look something like this:
 layers already present: 68; layers needed: 7 (126.7 MB)
  452 B [████████████████████] (0s) Fetched layer sha256:2691e6642975            
 Pruned images: 0 (layers: 0, objsize: 58.9 MB)
-Queued for next boot: summit.registry/lb1506:bootc-auth
+Queued for next boot: $REGISTRY:bootc-auth
   Version: 9.20240721.0
   Digest: sha256:2afd495b9dd3e72aa4926deb1e738af54e0b1bb935803bc6c107bdd919347167
 ----
@@ -120,11 +120,11 @@ sudo systemctl reboot
 [#user-test]
 == Testing the changes
 
-You can now login to the virtual machine with the newly added root credentials:
+From the `Terminal` tab you can test the newly added root credentials.
 
 [source,bash]
 ----
-ssh root@qcow-vm
+ssh root@qcow
 ----
 
 And check once again the status of bootc (no need to use `sudo`, you are root):
@@ -144,7 +144,7 @@ metadata:
   name: host
 spec:
   image:
-    image: summit.registry/lb1506:bootc-auth
+    image: $REGISTRY:bootc-auth
     transport: registry
   bootOrder: default
 status:
@@ -152,7 +152,7 @@ status:
   booted:
     image:
       image:
-        image: summit.registry/lb1506:bootc-auth
+        image: $REGISTRY:bootc-auth
         transport: registry
       version: 9.20240721.0
       timestamp: null
@@ -166,7 +166,7 @@ status:
   rollback:
     image:
       image:
-        image: summit.registry/lb1506:bootc-wp
+        image: $REGISTRY:bootc-wp
         transport: registry
       version: 9.20240721.0
       timestamp: null
@@ -192,3 +192,4 @@ Before proceeding, make sure you have logged out of the virtual machine:
 ----
 logout
 ----
+

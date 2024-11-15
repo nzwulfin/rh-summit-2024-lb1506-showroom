@@ -82,7 +82,7 @@ First, you want to make sure the bootc image is available to the local registry:
 
 [source,bash]
 ----
-skopeo inspect docker://summit.registry/lb1506:bootc | jq '.Digest'
+skopeo inspect docker://$REGISTRY:bootc | jq '.Digest'
 ----
 ....
 "sha256:655721ff613ee766a4126cb5e0d5ae81598e1b0c3bcf7017c36c4d72cb092fe9"
@@ -93,16 +93,16 @@ To convert from an OCI image to a disk image, we have a special version of image
 
 Try to generate the image now:
 
-NOTE: This could take 2+ minutes to complete.
+NOTE: This could take 4+ minutes to complete.
 [source,bash]
 ----
-sudo podman run --rm --privileged \
+podman run --rm --privileged \
         --volume .:/output \
         --volume ./config-qcow2.json:/config.json \
         registry.redhat.io/rhel9/bootc-image-builder:latest \
         --type qcow2 --config /config.json \
         --tls-verify=false \
-        summit.registry/lb1506:bootc
+        $REGISTRY:bootc
 ----
 
 A brief explanation of the arguments used for `podman` and `bootc-image-buider`:
@@ -117,11 +117,11 @@ From here, these arguments passed to `bootc-image-builder`
   * `--type qcow2` -> the type of image to build
   * `--config /config.json` -> the json configuration file used; please note this is relative to the container volume we added
   * `--tls-verify=false` -> the registry we are running is local and it has self signed certificates; this flag would not be needed with `quay.io` for example
-  * `summit.registry/lb1506:bootc` -> the bootc image we are unpacking into the qcow2 disk
+  * `$REGISTRY:bootc` -> the bootc image we are unpacking into the qcow2 disk
 
 Once this completes, you will find the image is the `qcow2/` directory:
 
-NOTE: For your convenience, this part of the exercise is automated by using the `make qcow CONTAINER=summit.registry/lb1506:bootc` command.
+NOTE: For your convenience, this part of the exercise is automated by using the `make qcow CONTAINER=$REGISTRY:bootc` command.
 
 [source,bash]
 ----
@@ -151,12 +151,12 @@ make vm-qcow
 
 [source,bash]
 ----
-sudo cp qcow2/disk.qcow2 /var/lib/libvirt/images/summit/qcow-vm.qcow2
+cp qcow2/disk.qcow2 /var/lib/libvirt/images/summit/qcow-vm.qcow2
 virt-install --connect qemu:///system \
                 --name qcow \
                 --disk /var/lib/libvirt/images/summit/qcow-vm.qcow2 \
                 --import \
-                --network "network=summit-network,mac=de:ad:be:ef:01:03" \
+                --network "network=default,mac=de:ad:be:ef:01:03" \
                 --memory 4096 \
                 --graphics none \
                 --osinfo rhel9-unknown \
@@ -191,17 +191,12 @@ and running, you can see if the webserver behaves as expected.
 
 [source,bash]
 ----
-curl http://qcow-vm
+curl http://qcow
 ----
 
 And the results should be the "Hello Red Hat" string defined in the index.html.
 
-You can now login to the virtual machine.
-
-[source,bash]
-----
-ssh lab-user@qcow-vm
-----
+You can now login to the virtual machine. Navigate to the `SSH QCOW VM` tab of the interface.
 
 NOTE: If the ssh key is not automatically picked up, use the password defined in the JSON file at the beginning of this lab (by default `lb1506`). 
 This is also the password to use when prompted by `sudo`.
@@ -223,7 +218,7 @@ metadata:
   name: host
 spec:
   image:
-    image: summit.registry/lb1506:bootc
+    image: $REGISTRY:bootc
     transport: registry
   bootOrder: default
 status:
@@ -231,7 +226,7 @@ status:
   booted: <1>
     image:
       image:
-        image: summit.registry/lb1506:bootc
+        image: $REGISTRY:bootc
         transport: registry
       version: 9.20240501.0
       timestamp: null
@@ -249,7 +244,7 @@ status:
 
 From the output of `bootc status`, find the block that starts with `booted`. 
 
-<1> This block provides information about the image in use. You can see that image is listed as `summit.registry/lb1506:bootc`.
+<1> This block provides information about the image in use. You can see that image is listed as `$REGISTRY:bootc`.
 
 You can explore the virtual machine before moving on to the next section:
 
@@ -278,11 +273,4 @@ the cgroup hierarchy and SELinux context. We'll look at the container output in 
 <3> `system_u:system_r:init_t:s0`
 
 
-Before proceeding, make sure you have logged out of the virtual machine:
-
-[source,bash]
-----
-logout
-----
-
-The prompt should read `[lab-user@hypervisor rh-summit-2024-lb1506]$` before continuing.
+Before proceeding, make sure you have returned to the `Terminal` tab.

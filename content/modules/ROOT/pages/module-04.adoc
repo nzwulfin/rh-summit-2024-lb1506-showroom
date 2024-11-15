@@ -62,8 +62,6 @@ Now that we have our new configs, we can add them to the Containerfile and rebui
 ----
 FROM registry.redhat.io/rhel9/rhel-bootc:9.4
 
-COPY certs/004-summit.conf /etc/containers/registries.conf.d/004-summit.conf
-
 ADD etc/ /etc # <1>
 
 RUN dnf install -y httpd
@@ -82,14 +80,14 @@ We rebuild the image with our updates the same way we originally built it.
 
 [source,bash]
 ----
-podman build --file Containerfile --tag summit.registry/lb1506:bootc
+podman build --file Containerfile --tag $REGISTRY:bootc
 ----
 
 And make sure to push it to the registry:
 
 [source,bash]
 ----
-podman push summit.registry/lb1506:bootc
+podman push $REGISTRY:bootc
 ----
 
 [#update-vm]
@@ -104,12 +102,7 @@ virsh --connect qemu:///system list
 
 And the output should the virtual machine called `qcow` as `running`.
 
-Now you can ssh into the virtual machine:
-
-[source,bash]
-----
-ssh lab-user@qcow-vm
-----
+Now you can return to the tab labeled `SSH QCOW VM`. If you have been logged out, hit the refresh icon in the right corner of the title bar.
 
 The `bootc update` command will download and prepare a detected update for use at the next boot. This means updates are offline, and 
 can be applied at any time. Changes will only take effect when the system reboots. (Reminder, the password for `sudo` is `lb1506`):
@@ -123,7 +116,7 @@ The output should look something like this:
 
 ....
 Loading usr/lib/ostree/prepare-root.conf
-Queued for next boot: summit.registry/lb1506:bootc-auth
+Queued for next boot: $REGISTRY:bootc-auth
   Version: 9.20240501.0
   Digest: sha256:c5a5bc63cc5d081c528c82a177d0c5eac996a16fa3a651f93d07825302ff5336
 Total new layers: 73    Size: 947.9 MB
@@ -148,14 +141,14 @@ metadata:
   name: host
 spec:
   image:
-    image: summit.registry/lb1506:bootc
+    image: $REGISTRY:bootc
     transport: registry
   bootOrder: default
 status:
   staged: <1>
     image:
       image:
-        image: summit.registry/lb1506:bootc
+        image: $REGISTRY:bootc
         transport: registry
       version: 9.20240501.0
       timestamp: null
@@ -169,14 +162,14 @@ status:
   booted:
     image:
       image:
-        image: summit.registry/lb1506:bootc
+        image: $REGISTRY:bootc
         transport: registry
       version: 9.20240501.0
       timestamp: null
       imageDigest: sha256:b57df8b24f7ddaf39ade0efe02d203e4fcd63deca2a9fd47f4af5c2cc3fcd017
     cachedUpdate:
       image:
-        image: summit.registry/lb1506:bootc
+        image: $REGISTRY:bootc
         transport: registry
       version: 9.20240501.0
       timestamp: null
@@ -205,11 +198,6 @@ sudo systemctl reboot
 == Testing the changes
 
 After a short wait, log back into the system and and you should see the message of the day after logging in successfully.
-
-[source,bash]
-----
-ssh lab-user@qcow-vm
-----
 
 We can check on our sudoers policy change as well. You shouldn't be prompted for you password:
 [source,bash]

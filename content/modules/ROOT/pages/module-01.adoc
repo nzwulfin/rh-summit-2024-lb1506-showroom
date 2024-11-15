@@ -8,14 +8,7 @@ the host, as well as setting up the required access for Red Hat resources.
 [#repo]
 == Installing Repositories
 
-First, let's start by cloning the helper scripts.
-
-[source,bash]
-----
-git clone https://github.com/nzwulfin/rh-summit-2024-lb1506
-----
-
-...and changing our directory to the newly created one:
+First, let's start by changing our working directory:
 
 [source,bash]
 ----
@@ -25,32 +18,24 @@ cd rh-summit-2024-lb1506
 [#login]
 == Red Hat registry login
 
-In order to use the base Red Hat Enterprise Linux container images, you need to
-login to Red Hat's image container registry by using your Red Hat account
-credentials. If you don't have a Red Hat account or are concerned about using
-your credentials on a public network, feel free to create a new personal account
-that povides you with a no-cost
-https://developers.redhat.com/articles/faqs-no-cost-red-hat-enterprise-linux#general[Red Hat Developer Subscription].
+This lab has already logged into the Red Hat terms based registry, however if there is an issue a convinience command has been created.
+To log back into the registry at any time you can use:"
 
 [source,bash]
 ----
-podman login registry.redhat.io
+reglogin
 ----
 
-You will be asked for a username (this is typically the email address associated with your account) and
-a password.
 
 [#high-level]
 == Preparing the host for container building
 
 In this final part of the setup, you will:
 
-  * setup the hypervisor for running virtual machines
-  * generate a local ssh key
-  * run a local container image registry
-  * download all the required container images
+  * download some additional files
+  * finalize the system config
 
-Don't worry if this sounds like a lot, there is a script to do it all for you:
+There is a script to do it all for you:
 
 [source,bash]
 ----
@@ -60,7 +45,7 @@ make setup
 [#status]
 == Checking the setup
 
-One final check before you advance to the next lab.
+One final check before you advance to the next lab. All exercises will be listed in this browser window, there is no additional challenge in the Instruqt UI.
 
 [source,bash]
 ----
@@ -79,10 +64,6 @@ podman login --get-login registry.redhat.io
 cgament@redhat.com
 podman image exists "registry.redhat.io/rhel9/rhel-bootc:9.4"
 podman image exists "quay.io/centos-bootc/bootc-image-builder:latest"
-podman image exists registry.access.redhat.com/ubi9/ubi-minimal
-podman image exists registry.access.redhat.com/ubi9/ubi
-podman image exists quay.io/kwozyman/toolbox:httpd
-podman image exists quay.io/kwozyman/toolbox:registry
      Active: active (running) since Wed 2024-05-01 17:13:37 EDT; 55s ago
  Id   Name   State
 --------------------

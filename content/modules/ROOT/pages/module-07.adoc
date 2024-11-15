@@ -1,7 +1,7 @@
 = Creating an inner loop for system design
 In this exercise, you'll look at how to test without needing to deploy the image to a host.
 
-NOTE: You should on the lab host (the prompt should look like `[lab-user@hypervisor rh-summit-2024-lb1506]$``), if not log out of the VM now.
+NOTE: You should in the `Terminal` tab for this exercise.
 
 
 Being able to make changes, build, and run an application locally is part of what is called
@@ -22,7 +22,7 @@ the bootc image will initialize as intended when running as a host.
 
 [source,bash]
 ----
-podman run --rm --name http-test --detach --publish 80:80 summit.registry/lb1506:bootc
+podman run --rm --name http-test --detach --publish 80:80 $REGISTRY:bootc
 ----
 
 Test that it is running:
@@ -35,7 +35,7 @@ podman ps | grep http-test
 The output of the command above should resemble:
 
 ----
-06a7bdb1950b  summit.registry/lb1506:latest    15 seconds ago  Up 16 seconds  0.0.0.0:80->80/tcp    http-test
+06a7bdb1950b  $REGISTRY:latest    15 seconds ago  Up 16 seconds  0.0.0.0:80->80/tcp    http-test
 ----
 
 We exposed a port from the container on the lab host, so we can test the web server.

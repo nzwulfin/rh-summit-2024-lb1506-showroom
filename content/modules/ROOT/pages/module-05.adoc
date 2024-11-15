@@ -4,14 +4,7 @@ In this lab, you'll look at rollbacks and examine how bootc handles directories 
 
 [#rollback-vm]
 == Rolling back changes to the virtual machine
-[NOTE] 
-====
-You should still be logged into the bootc VM (the prompt should look like `[lab@qcow-vm ~]$`), if not log back in now.
-[source,bash]
-----
-ssh lab-user@qcow-vm
-----
-====
+NOTE: You should still be logged into the qcow VM 
 
 We have a new built-in option available to image mode systems that typically takes more preparation with package mode 
 operations: the rollback. 
@@ -32,7 +25,7 @@ metadata:
   name: host
 spec:
   image:
-    image: summit.registry/lb1506:bootc
+    image: $REGISTRY:bootc
     transport: registry
   bootOrder: default
 status:
@@ -40,7 +33,7 @@ status:
   booted: <1>
     image:
       image:
-        image: summit.registry/lb1506:bootc
+        image: $REGISTRY:bootc
         transport: registry
       version: 9.20240714.0
       timestamp: null
@@ -54,14 +47,14 @@ status:
   rollback: <3>
     image:
       image:
-        image: summit.registry/lb1506:bootc
+        image: $REGISTRY:bootc
         transport: registry
       version: 9.20240714.0
       timestamp: null
       imageDigest: sha256:9b49d2186c0e52142d0bc5ebace934420ba5108320c37ad985c423720fc69f29
     cachedUpdate:
       image:
-        image: summit.registry/lb1506:bootc
+        image: $REGISTRY:bootc
         transport: registry
       version: 9.20240714.0
       timestamp: null
@@ -135,6 +128,8 @@ sudo systemctl reboot
 [#directory-layout]
 == How image mode handles directories
 
+NOTE: Return to the tab labeled `Terminal` to procced as the VM reboots.
+
 On the lab host, we're going to make some changes to the Containerfile to account for how
 directories are managed by `bootc`.
 
@@ -158,8 +153,6 @@ to where we put content and how we serve it in Apache.
 [source,dockerfile]
 ----
 FROM registry.redhat.io/rhel9/rhel-bootc:9.4
-
-COPY certs/004-summit.conf /etc/containers/registries.conf.d/004-summit.conf
 
 ADD etc/ /etc
 
@@ -191,24 +184,19 @@ only pushes those layers that contain changes.
 
 [source,bash]
 ----
-podman build --file Containerfile --tag summit.registry/lb1506:bootc
+podman build --file Containerfile --tag $REGISTRY:bootc
 ----
 
 And make sure to push it to the registry:
 
 [source,bash]
 ----
-podman push summit.registry/lb1506:bootc
+podman push $REGISTRY:bootc
 ----
 [#update2-vm]
 == Updating the virtual machine
 
-Now you can ssh into the virtual machine
-
-[source,bash]
-----
-ssh lab-user@qcow-vm
-----
+Now you can return the virtual machine tab and log in via ssh
 
 Previously, we checked for an update, downloaded and staged it locally to be activated, then manually rebooted 
 the system to have the update take effect. This is a very good procedure for a manual update or in places 
@@ -240,7 +228,7 @@ Remember that the update will detail what layers are new, removed, or added.
 
 ----
 Loading usr/lib/ostree/prepare-root.conf
-Queued for next boot: summit.registry/lb1506:bootc-auth
+Queued for next boot: $REGISTRY:bootc-auth
   Version: 9.20240714.0
   Digest: sha256:07eb42017b20ef5f33945014d0be92b077cb4890a97a5def117a745567cbd3f1
 Total new layers: 72    Size: 972.0 MB
@@ -259,7 +247,7 @@ We can check for our new web page from the lab host (`[lab-user@hypervisor rh-su
 
 [source,console]
 ----
-curl http://qcow-vm
+curl http://qcow
 ----
 
 Now the output should be "Hello Red Hat Summit Connect 2024!!"

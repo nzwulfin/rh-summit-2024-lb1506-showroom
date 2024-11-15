@@ -6,13 +6,9 @@ In this lab you will learn how to evolve your containers into full fledged opera
 
 === Lab Access
 
-You can access the lab via `ssh` from a terminal on your local machine or via the web based terminal provided. You can use the slider in the middle of the screen to resize the terminal and instruction panes.
+In the Instruqt browser there will be 4 tabs available during this lab.
 
-[source,sh,subs=attributes+]
-----
-ssh {bastion_ssh_user_name}@{bastion_public_hostname}
-----
-
-Your password is `{bastion_ssh_password}`
-
-All steps of this lab are to be completed as the `{bastion_ssh_user_name}` user.
+The `Terminal` tab is the main host and hypervisor for this lab. Unless instructed, most of the exercises will be done here
+The `Code editor` tab is provided as a convinience to help with editing files as an alternative to vim or nano
+The SSH tabs will each be used to access the VM named in the tab title. Until those VMs are launched these will show an error.
+To connect to the VM once it's been launched, hit the refresh button in the top right corner of the title bar.
