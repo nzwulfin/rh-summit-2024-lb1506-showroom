@@ -191,7 +191,7 @@ status:
 should match the Digest from the output of `bootc update`. 
 
 The last step for the change to take is to reboot the virtual machine. Before doing so, please make sure you are logged in to the
-virtual machine and not the hypervisor (the prompt should look like `[lab-user@qcow-vm ~]$`):
+virtual machine tab and not the Terminal.
 
 [source,bash]
 ----
@@ -201,7 +201,7 @@ sudo systemctl reboot
 [#testing]
 == Testing the changes
 
-After a short wait, log back into the system and and you should see the message of the day after logging in successfully.
+After a short wait, hit the refresh icon in the upper right corner to log back into the system and and you should see the message of the day after logging in successfully.
 
 We can check on our sudoers policy change as well. You shouldn't be prompted for you password:
 [source,bash]
