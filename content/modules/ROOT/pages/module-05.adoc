@@ -25,7 +25,7 @@ metadata:
   name: host
 spec:
   image:
-    image: $REGISTRY:bootc
+    image: $REGISTRY/bootc
     transport: registry
   bootOrder: default
 status:
@@ -33,7 +33,7 @@ status:
   booted: <1>
     image:
       image:
-        image: $REGISTRY:bootc
+        image: $REGISTRY/bootc
         transport: registry
       version: 9.20240714.0
       timestamp: null
@@ -47,14 +47,14 @@ status:
   rollback: <3>
     image:
       image:
-        image: $REGISTRY:bootc
+        image: $REGISTRY/bootc
         transport: registry
       version: 9.20240714.0
       timestamp: null
       imageDigest: sha256:9b49d2186c0e52142d0bc5ebace934420ba5108320c37ad985c423720fc69f29
     cachedUpdate:
       image:
-        image: $REGISTRY:bootc
+        image: $REGISTRY/bootc
         transport: registry
       version: 9.20240714.0
       timestamp: null
@@ -184,14 +184,14 @@ only pushes those layers that contain changes.
 
 [source,bash]
 ----
-podman build --file Containerfile --tag $REGISTRY:bootc
+podman build --file Containerfile --tag $REGISTRY/bootc
 ----
 
 And make sure to push it to the registry:
 
 [source,bash]
 ----
-podman push $REGISTRY:bootc
+podman push $REGISTRY/bootc
 ----
 [#update2-vm]
 == Updating the virtual machine
@@ -228,7 +228,7 @@ Remember that the update will detail what layers are new, removed, or added.
 
 ----
 Loading usr/lib/ostree/prepare-root.conf
-Queued for next boot: $REGISTRY:bootc-auth
+Queued for next boot: $REGISTRY/bootc-auth
   Version: 9.20240714.0
   Digest: sha256:07eb42017b20ef5f33945014d0be92b077cb4890a97a5def117a745567cbd3f1
 Total new layers: 72    Size: 972.0 MB

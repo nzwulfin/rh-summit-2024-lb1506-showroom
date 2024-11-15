@@ -4,6 +4,7 @@ In this lab, you will learn how to create updated images and apply them to bootc
 
 [#update-container]
 == Updating the bootc image
+Before proceeding, make sure you have returned to the `Terminal` tab.
 
 We've created our first system but there are a few things that might be missing we typically 
 do to our systems. Not requiring a password every time we use sudo might be something we allow 
@@ -80,14 +81,14 @@ We rebuild the image with our updates the same way we originally built it.
 
 [source,bash]
 ----
-podman build --file Containerfile --tag $REGISTRY:bootc
+podman build --file Containerfile --tag $REGISTRY/bootc
 ----
 
 And make sure to push it to the registry:
 
 [source,bash]
 ----
-podman push $REGISTRY:bootc
+podman push $REGISTRY/bootc
 ----
 
 [#update-vm]
@@ -116,7 +117,7 @@ The output should look something like this:
 
 ....
 Loading usr/lib/ostree/prepare-root.conf
-Queued for next boot: $REGISTRY:bootc-auth
+Queued for next boot: $REGISTRY/bootc-auth
   Version: 9.20240501.0
   Digest: sha256:c5a5bc63cc5d081c528c82a177d0c5eac996a16fa3a651f93d07825302ff5336
 Total new layers: 73    Size: 947.9 MB
@@ -141,14 +142,14 @@ metadata:
   name: host
 spec:
   image:
-    image: $REGISTRY:bootc
+    image: $REGISTRY/bootc
     transport: registry
   bootOrder: default
 status:
   staged: <1>
     image:
       image:
-        image: $REGISTRY:bootc
+        image: $REGISTRY/bootc
         transport: registry
       version: 9.20240501.0
       timestamp: null
@@ -162,14 +163,14 @@ status:
   booted:
     image:
       image:
-        image: $REGISTRY:bootc
+        image: $REGISTRY/bootc
         transport: registry
       version: 9.20240501.0
       timestamp: null
       imageDigest: sha256:b57df8b24f7ddaf39ade0efe02d203e4fcd63deca2a9fd47f4af5c2cc3fcd017
     cachedUpdate:
       image:
-        image: $REGISTRY:bootc
+        image: $REGISTRY/bootc
         transport: registry
       version: 9.20240501.0
       timestamp: null

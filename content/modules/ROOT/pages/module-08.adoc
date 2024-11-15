@@ -62,14 +62,14 @@ We're also going to use a new tag for this image, like we did in the previous `b
 
 [source,bash]
 ----
-podman build --secret id=SSHPUBKEY,src=/home/lab-user/.ssh/id_rsa.pub --file Containerfile --tag $REGISTRY:bootc-auth
+podman build --secret id=SSHPUBKEY,src=/home/lab-user/.ssh/id_rsa.pub --file Containerfile --tag $REGISTRY/bootc-auth
 ----
 
 And make sure to push it to the registry:
 
 [source,bash]
 ----
-podman push $REGISTRY:bootc-auth
+podman push $REGISTRY/bootc-auth
 ----
 
 [#switch-creds]
@@ -95,7 +95,7 @@ We can change to our new image with the embedded `root` credentials, substitute 
 
 [source,bash]
 ----
-sudo bootc switch $REGISTRY:bootc-auth
+sudo bootc switch $REGISTRY/bootc-auth
 ----
 
 The output should look something like this:
@@ -104,7 +104,7 @@ The output should look something like this:
 layers already present: 68; layers needed: 7 (126.7 MB)
  452 B [████████████████████] (0s) Fetched layer sha256:2691e6642975            
 Pruned images: 0 (layers: 0, objsize: 58.9 MB)
-Queued for next boot: $REGISTRY:bootc-auth
+Queued for next boot: $REGISTRY/bootc-auth
   Version: 9.20240721.0
   Digest: sha256:2afd495b9dd3e72aa4926deb1e738af54e0b1bb935803bc6c107bdd919347167
 ----
@@ -144,7 +144,7 @@ metadata:
   name: host
 spec:
   image:
-    image: $REGISTRY:bootc-auth
+    image: $REGISTRY/bootc-auth
     transport: registry
   bootOrder: default
 status:
@@ -152,7 +152,7 @@ status:
   booted:
     image:
       image:
-        image: $REGISTRY:bootc-auth
+        image: $REGISTRY/bootc-auth
         transport: registry
       version: 9.20240721.0
       timestamp: null
@@ -166,7 +166,7 @@ status:
   rollback:
     image:
       image:
-        image: $REGISTRY:bootc-wp
+        image: $REGISTRY/bootc-wp
         transport: registry
       version: 9.20240721.0
       timestamp: null

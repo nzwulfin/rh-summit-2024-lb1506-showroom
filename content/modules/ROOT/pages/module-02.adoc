@@ -4,17 +4,13 @@ In this step you will transform an application container to a bootc image.
 [#write]
 == Modify the Containerfile
 
-NOTE: The `vim` editor is also available. Users of `vim` should already know the basics
-of opening, saving and exiting the editor. The instructions will reflect `nano` commands.
-All of the files used can be found in the `examples` directory.
+NOTE: The `vim` editor is also available if you don't wish to use the `Code editor`. Users of `vim` should already know the basics
+of opening, saving and exiting the editor. 
 
 Let's start with a typical application container and convert it to an image mode host. We'll start
-with something simple, a basic webserver running on the Red Hat Universal Base Image. To start the editor:
+with something simple, a basic webserver running on the Red Hat Universal Base Image. 
 
-[source,bash]
-----
-nano Containerfile
-----
+Open the `Code editor` tab and select the `Containerfile` in the starting directory.
 
 [source,dockerfile]
 ----
@@ -43,8 +39,7 @@ RUN echo "Hello Red Hat" > /var/www/html/index.html
 RUN systemctl enable httpd.service
 ----
 
-TIP: In `nano`, you can save and exit with `Ctrl+x`, followed by the key `y` at the "Save modified buffer?" prompt 
-and the `Enter` key at the prompt to keep the filename.
+TIP: The editor should auto-save but you can use typical Cmd-S / Ctrl-S keys to manually save changes.
 
 Let's talk about the effects of these changes:
 
@@ -73,13 +68,13 @@ As with application containers, you can build this container with standard tools
 
 [source,bash]
 ----
-podman build --file Containerfile --tag $REGISTRY:bootc
+podman build --file Containerfile --tag $REGISTRY/bootc
 ----
 
 If the above command is succesful, the last two lines of the output should read like this:
 
 ....
-Successfully tagged $REGISTRY:bootc
+Successfully tagged $REGISTRY/bootc
 f1bea10eb37acf2e78a9b01c6242110c1901adbaf40dbce479241c6c735c58da
 ....
 
@@ -95,7 +90,7 @@ We have a registry available within the lab environment we can push our image to
 
 [source,bash]
 ----
-podman push $REGISTRY:bootc
+podman push $REGISTRY/bootc
 ----
 
 That's all there is to designing and building a complete operating system. Start with a base, then add software and 

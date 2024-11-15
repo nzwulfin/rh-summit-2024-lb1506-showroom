@@ -46,9 +46,10 @@ in the `key` field with the contents of `~/.ssh/id_rsa.pub` from your system:
 
 [source,bash]
 ----
-nano config-qcow2.json
+touch config-qcow2.json
 ----
 
+You can use the `Code editor` to make the following changes, you may need to click the refresh icon above the directory listing on the left side of the editor.
 [source,json]
 ----
 {
@@ -77,12 +78,13 @@ you can just use that with `cp config/config-qcow2.json config-qcow2.json`.
 
 [#create]
 == Create the disk image
+Return to the `Terminal` tab to create the disk image.
 
-First, you want to make sure the bootc image is available to the local registry:
+First, check that the bootc image is available to the local registry:
 
 [source,bash]
 ----
-skopeo inspect docker://$REGISTRY:bootc | jq '.Digest'
+skopeo inspect docker://$REGISTRY/bootc | jq '.Digest'
 ----
 ....
 "sha256:655721ff613ee766a4126cb5e0d5ae81598e1b0c3bcf7017c36c4d72cb092fe9"
@@ -102,7 +104,7 @@ podman run --rm --privileged \
         registry.redhat.io/rhel9/bootc-image-builder:latest \
         --type qcow2 --config /config.json \
         --tls-verify=false \
-        $REGISTRY:bootc
+        $REGISTRY/bootc
 ----
 
 A brief explanation of the arguments used for `podman` and `bootc-image-buider`:
@@ -117,11 +119,11 @@ From here, these arguments passed to `bootc-image-builder`
   * `--type qcow2` -> the type of image to build
   * `--config /config.json` -> the json configuration file used; please note this is relative to the container volume we added
   * `--tls-verify=false` -> the registry we are running is local and it has self signed certificates; this flag would not be needed with `quay.io` for example
-  * `$REGISTRY:bootc` -> the bootc image we are unpacking into the qcow2 disk
+  * `$REGISTRY/bootc` -> the bootc image we are unpacking into the qcow2 disk
 
 Once this completes, you will find the image is the `qcow2/` directory:
 
-NOTE: For your convenience, this part of the exercise is automated by using the `make qcow CONTAINER=$REGISTRY:bootc` command.
+NOTE: For your convenience, this part of the exercise is automated by using the `make qcow CONTAINER=$REGISTRY/bootc` command.
 
 [source,bash]
 ----
@@ -218,7 +220,7 @@ metadata:
   name: host
 spec:
   image:
-    image: $REGISTRY:bootc
+    image: $REGISTRY/bootc
     transport: registry
   bootOrder: default
 status:
@@ -226,7 +228,7 @@ status:
   booted: <1>
     image:
       image:
-        image: $REGISTRY:bootc
+        image: $REGISTRY/bootc
         transport: registry
       version: 9.20240501.0
       timestamp: null
@@ -244,7 +246,7 @@ status:
 
 From the output of `bootc status`, find the block that starts with `booted`. 
 
-<1> This block provides information about the image in use. You can see that image is listed as `$REGISTRY:bootc`.
+<1> This block provides information about the image in use. You can see that image is listed as `$REGISTRY/bootc`.
 
 You can explore the virtual machine before moving on to the next section:
 
@@ -273,4 +275,4 @@ the cgroup hierarchy and SELinux context. We'll look at the container output in 
 <3> `system_u:system_r:init_t:s0`
 
 
-Before proceeding, make sure you have returned to the `Terminal` tab.
+

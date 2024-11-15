@@ -37,7 +37,7 @@ definition.
 Update the `FROM` line in the Containerfile to reflect the registry host in your lab environment.
 [source,dockerfile]
 ----
-FROM $REGISTRY:bootc
+FROM $REGISTRY/bootc
 
 RUN dnf -y install lynx
 
@@ -81,14 +81,14 @@ Remember the format for the `--tag` flag is `<registry>/<repository>:<tag>`.
 
 [source,bash]
 ----
-podman build --file Containerfile.wp --tag $REGISTRY:bootc-wp
+podman build --file Containerfile.wp --tag $REGISTRY/bootc-wp
 ----
 
 And of course push it to the local registry:
 
 [source,bash]
 ----
-podman push $REGISTRY:bootc-wp
+podman push $REGISTRY/bootc-wp
 ----
 
 Notice that even though we used a new tag for this image, the push still used cached layers. This is an advantage of stacking images in a standard 
@@ -106,7 +106,7 @@ would not show up as an available update, only changes to the new `bootc-wp` ima
 
 [source,bash]
 ----
-sudo bootc switch $REGISTRY:bootc-wp
+sudo bootc switch $REGISTRY/bootc-wp
 ----
 
 As usual, after the command is done you need to reboot the virtual machine
