@@ -39,7 +39,7 @@ RUN <<EOF
     sed -i 's-/var/www-/usr/share/www-' /etc/httpd/conf/httpd.conf
 EOF
 
-RUN echo "Hello Red Hat Summit Connect 2024!!" > /usr/share/www/html/index.html
+RUN echo "Hello Red Hat One 2025!!" > /usr/share/www/html/index.html
 
 RUN systemctl enable httpd.service
 ----
@@ -68,7 +68,7 @@ podman push $REGISTRY/bootc-auth
 [#switch-creds]
 == Changing the virtual machine image
 
-The virtual machine you have been working with during this workshop should still be running. You can check this with
+The QCOW virtual machine you have been working with during this workshop should still be running. You can check this with
 
 [source,bash]
 ----

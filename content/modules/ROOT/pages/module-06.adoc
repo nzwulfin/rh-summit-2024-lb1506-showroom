@@ -34,7 +34,7 @@ the fact. Notice our `FROM` line is the image you've been working on throughout 
 bit of customization and software you've installed previously will be available on the host built from this new 
 definition. 
 
-Update the `FROM` line in the Containerfile to reflect the registry host in your lab environment: $REGISTRY/bootc
+Update the `FROM` line in the Containerfile to reflect the registry host in your lab environment: `$REGISTRY/bootc`
 [source,dockerfile]
 ----
 FROM summit.registry/lb1506:bootc
@@ -125,7 +125,7 @@ virtual machine tab and not the `Terminal` (the prompt should look like `[lab-us
 sudo systemctl reboot
 ----
 
-After a short while, you can log back in to the virtual machine via the `SSH QCOW VM` tab.
+After a short while, you can log back in to the virtual machine via the `SSH QCOW VM` tab by pressing the refresh icon.
 
 [#layers]
 == Troubleshooting layered builds

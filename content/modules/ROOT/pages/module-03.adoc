@@ -201,7 +201,7 @@ curl http://qcow
 
 And the results should be the "Hello Red Hat" string defined in the index.html.
 
-You can now login to the virtual machine. Navigate to the `SSH QCOW VM` tab of the interface.
+You can now login to the virtual machine. Navigate to the `SSH QCOW VM` tab of the interface. You may need to hit the refresh icon in the upper right corner of the tab.
 
 NOTE: If the ssh key is not automatically picked up, use the password defined in the JSON file at the beginning of this lab (by default `lb1506`). 
 This is also the password to use when prompted by `sudo`.

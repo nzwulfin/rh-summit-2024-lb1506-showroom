@@ -48,7 +48,7 @@ curl http://localhost/
 The result of the command above should be the latest index.html we created.
 
 ----
-Hello Red Hat Summit Connect 2024!!
+Hello Red Hat One 2025!!
 ----
 
 Before we attach to an interactive shell in the running container, let's get the kernel command line from the 

@@ -165,7 +165,7 @@ RUN <<EOF #<1>
     sed -i 's-/var/www-/usr/share/www-' /etc/httpd/conf/httpd.conf
 EOF
 
-RUN echo "Hello Red Hat Summit Connect 2024!!" > /usr/share/www/html/index.html
+RUN echo "Hello Red Hat One 2025!!" > /usr/share/www/html/index.html
 
 RUN systemctl enable httpd.service
 ----
@@ -228,6 +228,8 @@ Instead of waiting for this timer to trigger, we can immediately apply the new u
 sudo bootc update --apply
 ----
 
+You're prompted for a password by `sudo` because we rolled back to a version of the image that does not include our drop-in file.
+
 Remember that the update will detail what layers are new, removed, or added.
 
 ----
@@ -247,11 +249,11 @@ Connection to qcow-vm closed.
 [#testing]
 == Testing the changes
 
-We can check for our new web page from the `Terminal` tab (`[root@rhel rh-summit-2024-lb1506]$`):
+We can check for our new web page from the `Terminal` tab (`[root@rhel rh-summit-2024-lb1506]#`):
 
 [source,console]
 ----
 curl http://qcow
 ----
 
-Now the output should be "Hello Red Hat Summit Connect 2024!!"
+Now the output should be "Hello Red Hat One 2025!!"
