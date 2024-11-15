@@ -27,14 +27,17 @@ Since the motd file lives in the top level of `/etc`, that one command creates a
 we need for this exercise. RHEL supports drop-in directories for several services and applications, including 
 `sudo` privileges. Drop-in support lets us add a file to a `<servicename>.d` directory rather than editing 
 the main configuration file. You might already be familiar with drop-in config files from working with Apache and 
-it's `/etc/httpd/conf.d/` directory.
+it's `/etc/httpd/conf.d/` directory.  
+
+NOTE: We're using `vim` here, but feel free to use the `Code editor` to create these files. Each directory has a 'New file' button
+in the file picker pane. It's the first button of the two.
 
 
 Let's address the sudoers password first, by allowing users in the wheel group to not need to enter their password.
 
 [source,bash]
 ----
-nano etc/sudoers.d/wheel
+vim etc/sudoers.d/wheel
 ----
 
 Add the following and save the file
@@ -48,7 +51,7 @@ And let's provide a message of the day!
 
 [source,bash]
 ----
-nano etc/motd
+vim etc/motd
 ----
 
 Add the following and save the file
