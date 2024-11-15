@@ -86,7 +86,7 @@ f1bea10eb37acf2e78a9b01c6242110c1901adbaf40dbce479241c6c735c58da
 Now that we have a full operating system in a standard OCI container image, we can use
 standard container registries to host and distribute our OS images. The only atypical thing so far 
 is what's in the base image. How we added software or files to the image is the same as any other 
-application container. The special sauce of `bootc` comes when a host is running.
+application container. The special sauce of `bootc` comes when installing or updating a host.
 
 We have a registry available within the lab environment we can push our image to:
 

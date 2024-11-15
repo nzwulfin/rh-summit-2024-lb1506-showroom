@@ -58,10 +58,48 @@ skopeo copy "docker://$REGISTRY/bootc" "oci:${TEMPDIR}/container/"
 mkksiso --ks local.kickstart --add ${TEMPDIR}/container/ original.iso custom.iso
 ----
 
+Once you see the following output, you can proceed.
+....
+ISO image produced: 1028128 sectors
+Written to medium : 1028288 sectors at LBA 32
+Writing to '/var/lib/libvirt/images/summit/rhel-boot-custom.iso' completed successfully.
+
+Done
+....
+
+[#run]
+== Starting the installation with Anaconda in a virtual machine
+
+Having created a custom installation ISO, we can boot a virtual machine and automatically install our image. Creating
+a virtual machine from scratch is out of scope for this workshop, so we have provided a make command. We are once again using 
+`virt-install` to create a local VM, the main difference is that here we are using the `--location` option to pass the local 
+path of the ISO file to the install process. This emulates inserting a phyiscal disk into a bare metal system.
+
+----
+make vm-iso
+----
+
+The command above will start the installation process and you should see the console of a newly created virtual machine
+booting from the custom iso. Watch for the Anaconda output as it proceeds with the unattended install. 
+
+NOTE: This will take 3+ minutes to complete
+....
+Powering off.
+[   65.973246] reboot: Power down
+
+Domain creation completed.
+You can restart your domain by running:
+  virsh --connect qemu:///system start iso
+virsh --connect "qemu:///system" start "iso"
+Domain 'iso' started
+....
+
 [#kickstart]
 == Exploring the kickstart file
 
-The Kickstart added to the iso is in `config/local.ks` and looks like this.
+While we wait for the install to finish, let's look at the kickstart file.
+
+NOTE: The Kickstart added to the iso is in `config/local.ks`. You can use the `Code editor` or the `Terminal` as well to view the file.
 
 ----
 text
@@ -95,43 +133,6 @@ ostreecontainer --url=quay.io/myorg/myimage:mytag
 All of the rest of the kickstart is standard fare. Anaconda will create the partitions and filesystems on disk, enable services, and create users 
 just like it would in any other install. You even have access to the `%pre` and `%post` blocks too, the only missing section from any kickstart you 
 have today is the `%packages` list.
-
-Once you see the following output, you can proceed.
-....
-ISO image produced: 1028128 sectors
-Written to medium : 1028288 sectors at LBA 32
-Writing to '/var/lib/libvirt/images/summit/rhel-boot-custom.iso' completed successfully.
-
-Done
-....
-
-[#run]
-== Starting the installation with Anaconda in a virtual machine
-
-Having created a custom installation ISO, we can boot a virtual machine and automatically install our image. Creating
-a virtual machine from scratch is out of scope for this workshop, so we have provided a make command. We are once again using 
-`virt-install` to create a local VM, the main difference is that here we are using the `--location` option to pass the local 
-path of the ISO file to the install process. This emulates inserting a phyiscal disk into a bare metal system.
-
-----
-make vm-iso
-----
-
-The command above will start the installation process and you should see the console of a newly created virtual machine
-booting from the custom iso. Watch for the Anaconda output as it proceeds with the unattended install. 
-
-NOTE: This will take several minutes to complete
-....
-Powering off.
-[   65.973246] reboot: Power down
-
-Domain creation completed.
-You can restart your domain by running:
-  virsh --connect qemu:///system start iso
-virsh --connect "qemu:///system" start "iso"
-Domain 'iso' started
-
-....
 
 You can now see if the virtual machine is running:
 
@@ -229,6 +230,8 @@ To keep with the theme of offline usage, let's simulate updating from the local 
 In the embedded ISO script, it's used to copy from the registry to be included in the final image. Here, we can use it to copy from 
 the registry to the host. We need to be sure to use `sudo` to copy into the system storage location and not the user's.
 
+NOTE: You will need the value of the `REGISTRY` environment variable from the `Terminal` to subsitute in the commands below.
+
 [source,bash]
 ----
 sudo skopeo copy --tls-verify=false docker://$REGISTRY/bootc  containers-storage:$REGISTRY/bootc 
@@ -252,7 +255,7 @@ Queued for next boot: ostree-unverified-image:containers-storage:$REGISTRY/bootc
 At this point, the "new" installation has been prepared and will be started at next boot of the virtual machine.
 
 The last step for the change to take is to reboot the virtual machine. Before doing it, please make sure you are logged in to the
-virtual machine and not the hypervisor (the prompt should look like `[lab-user@lb1506-vm ~]$`):
+`SSH ISO VM` tab and not the `Terminal` tab.
 
 [source,bash]
 ----
