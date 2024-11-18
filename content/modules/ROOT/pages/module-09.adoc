@@ -75,24 +75,14 @@ a virtual machine from scratch is out of scope for this workshop, so we have pro
 `virt-install` to create a local VM, the main difference is that here we are using the `--location` option to pass the local 
 path of the ISO file to the install process. This emulates inserting a phyiscal disk into a bare metal system.
 
+
+NOTE: This will take 3+ minutes to complete
 ----
 make vm-iso
 ----
 
 The command above will start the installation process and you should see the console of a newly created virtual machine
 booting from the custom iso. Watch for the Anaconda output as it proceeds with the unattended install. 
-
-NOTE: This will take 3+ minutes to complete
-....
-Powering off.
-[   65.973246] reboot: Power down
-
-Domain creation completed.
-You can restart your domain by running:
-  virsh --connect qemu:///system start iso
-virsh --connect "qemu:///system" start "iso"
-Domain 'iso' started
-....
 
 [#kickstart]
 == Exploring the kickstart file
@@ -133,6 +123,19 @@ ostreecontainer --url=quay.io/myorg/myimage:mytag
 All of the rest of the kickstart is standard fare. Anaconda will create the partitions and filesystems on disk, enable services, and create users 
 just like it would in any other install. You even have access to the `%pre` and `%post` blocks too, the only missing section from any kickstart you 
 have today is the `%packages` list.
+
+Once you see the following from the console, the install should be complete.
+
+....
+Powering off.
+[   65.973246] reboot: Power down
+
+Domain creation completed.
+You can restart your domain by running:
+  virsh --connect qemu:///system start iso
+virsh --connect "qemu:///system" start "iso"
+Domain 'iso' started
+....
 
 You can now see if the virtual machine is running:
 

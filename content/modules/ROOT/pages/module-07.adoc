@@ -25,7 +25,7 @@ the bootc image will initialize as intended when running as a host.
 podman run --rm --name http-test --detach --publish 80:80 $REGISTRY/bootc
 ----
 
-Test that it is running:
+Examine the details of our running container.
 
 [source,bash]
 ----
@@ -38,7 +38,7 @@ The output of the command above should resemble:
 2eba42ec8b2d  rhel.hd9zil0aonr2.instruqt.io:5000/bootc:latest  /sbin/init            9 seconds ago   Up 9 seconds   0.0.0.0:80->80/tcp      http-test
 ----
 
-We exposed a port from the container on the lab host, so we can test the web server.
+We exposed a port from the container on the lab host, so we can test the web server with `curl`.
 
 [source,bash]
 ----
@@ -92,7 +92,7 @@ You can use this container to experiment with changes, understand dependecies th
 started, and more. While issues we introduced in the switch exercise may not be discovered here, there is still a lot that can be done 
 to speed creation and testing of new operating system builds.
 
-We have `systemd` started so we can control services and check status:
+We have `systemd` available so we can control services and check status:
 
 [source,bash]
 ----
