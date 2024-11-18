@@ -10,7 +10,7 @@ the host, as well as setting up the required access for Red Hat resources.
 
 First, let's start by changing our working directory:
 
-[source,bash]
+[source,console]
 ----
 cd rh-summit-2024-lb1506
 ----
@@ -21,7 +21,7 @@ cd rh-summit-2024-lb1506
 This lab has already logged into the Red Hat terms based registry, however if there is an issue a convinience command has been created.
 To log back into the registry at any time you can use:"
 
-[source,bash]
+[source,console]
 ----
 reglogin
 ----
@@ -37,7 +37,7 @@ In this final part of the setup, you will:
 
 There is a script to do it all for you:
 
-[source,bash]
+[source,console]
 ----
 make setup
 ----
@@ -47,7 +47,7 @@ make setup
 
 One final check before you advance to the next lab. All exercises will be listed in this browser window, there is no additional challenge in the Instruqt UI.
 
-[source,bash]
+[source,console]
 ----
 make status
 ----

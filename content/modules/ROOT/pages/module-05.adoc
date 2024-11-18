@@ -249,7 +249,7 @@ Connection to qcow-vm closed.
 [#testing]
 == Testing the changes
 
-We can check for our new web page from the `Terminal` tab (`[root@rhel rh-summit-2024-lb1506]#`):
+We can check for our new web page from the `Terminal` tab once the VM has rebooted.
 
 [source,console]
 ----

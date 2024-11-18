@@ -97,6 +97,8 @@ podman push $REGISTRY/bootc
 [#update-vm]
 == Updating the virtual machine
 
+[NOTE]
+====
 The last virtual machine you have created during this workshop should still be running. You can check this with
 
 [source,bash]
@@ -105,6 +107,7 @@ virsh --connect qemu:///system list
 ----
 
 And the output should the virtual machine called `qcow` as `running`.
+====
 
 Now you can return to the tab labeled `SSH QCOW VM`. If you have been logged out, hit the refresh icon in the right corner of the title bar.
 
