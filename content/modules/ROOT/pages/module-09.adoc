@@ -150,6 +150,8 @@ virsh --connect qemu:///system list
 [#test]
 == Test and login to the virtual machine
 
+NOTE: This may throw hostname errors until the system is fully booted and libvirt-nss can resolve the IP
+
 Like with the previous virtual machine created, you can directly see if the http application is already running on the host:
 
 [source,bash]
@@ -157,7 +159,7 @@ Like with the previous virtual machine created, you can directly see if the http
 curl http://iso
 ----
 
-The output should be "Hello Red Hat Summit Connect 2024!!"
+The output should be "Hello Red Hat One 2024!!"
 
 You should also be able to login to the virtual machine via the `SSH ISO VM` tab. 
 

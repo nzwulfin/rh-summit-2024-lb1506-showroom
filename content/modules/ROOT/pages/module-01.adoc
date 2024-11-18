@@ -5,16 +5,6 @@ in the upper right corner can be copied and pasted into a terminal window instea
 In this lab, you will be cloning the lab helper scripts and preparing
 the host, as well as setting up the required access for Red Hat resources.
 
-[#repo]
-== Installing Repositories
-
-First, let's start by changing our working directory:
-
-[source,console]
-----
-cd rh-summit-2024-lb1506
-----
-
 [#login]
 == Red Hat registry login
 

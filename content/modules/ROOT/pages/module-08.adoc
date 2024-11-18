@@ -68,6 +68,8 @@ podman push $REGISTRY/bootc-auth
 [#switch-creds]
 == Changing the virtual machine image
 
+[NOTE]
+====
 The QCOW virtual machine you have been working with during this workshop should still be running. You can check this with
 
 [source,bash]
@@ -76,17 +78,18 @@ virsh --connect qemu:///system list
 ----
 
 And the output should contain a virtual machine called `qcow`.
+====
 
-In the `Terminal` tab, you will need to have the full registry name for the following commands in the VM ssh session.
+In the `Terminal` tab, you will need to have the full image name for the following commands in the VM ssh session.
 
 [source,bash]
 ----
-echo $REGISTRY
+podman images | grep auth
 ----
 
 Switch to the `SSH QCOW VM` tab to change the image the host is tracking.
 
-We can change to our new image with the embedded `root` credentials, substitute the full hostname from the `Terminal` for `your-reg-name` here.
+We can change to our new image with the embedded `root` credentials, substitute the image from the `Terminal` for `your-reg-name/bootc-auth` here.
 
 [source,bash]
 ----

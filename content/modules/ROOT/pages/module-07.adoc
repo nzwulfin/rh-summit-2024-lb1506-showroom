@@ -92,6 +92,23 @@ You can use this container to experiment with changes, understand dependecies th
 started, and more. While issues we introduced in the switch exercise may not be discovered here, there is still a lot that can be done 
 to speed creation and testing of new operating system builds.
 
+We have `systemd` started so we can control services and check status:
+
+[source,bash]
+----
+systemctl restart httpd
+systemctl status httpd
+systemctl status
+----
+
+But since we are in a container, other things like SELinux will not be able to be tested:
+
+[source,bash]
+----
+getenforce
+----
+
+
 Once you're done testing, go ahead and exit the shell, and stop the running container on the host:
 
 [source,bash]

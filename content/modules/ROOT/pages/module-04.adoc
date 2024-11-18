@@ -16,7 +16,7 @@ files we need inside it. This allows us to add all the configs at once with a si
 a single layer of the image.
 
 NOTE: This is a local directory, relative to the location of the Containerfile, not the system `/etc/`.
-These files are also provided in the `examples/update` directory. 
+These files are also provided in the `examples/update` directory. You should be in `~/rh-summit-2024-lb1506` when running this command.
 
 [source,bash]
 ----

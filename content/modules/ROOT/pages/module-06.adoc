@@ -35,8 +35,8 @@ bit of customization and software you've installed previously will be available 
 definition. 
 
 Update the `FROM` line in the Containerfile to reflect the registry host in your lab environment: 
-eg `FROM rhel.auwwhe2suwht.instruqt.io:5000/bootc
-`
+eg `FROM rhel.auwwhe2suwht.instruqt.io:5000/bootc`
+
 [source,dockerfile]
 ----
 FROM summit.registry/lb1506:bootc
@@ -96,11 +96,11 @@ podman push $REGISTRY/bootc-wp
 Notice that even though we used a new tag for this image, the push still used cached layers. This is an advantage of stacking images in a standard 
 build design.
 
-You will need to have the full registry name for the next exercise.
+You will need to have the full image name for the next exercise, use `podman` to find the last image built.
 
 [source,bash]
 ----
-echo $REGISTRY
+podman images
 ----
 
 
