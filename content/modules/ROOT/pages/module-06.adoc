@@ -50,7 +50,7 @@ ADD usr/ /usr
 
 For an 'advanced` configuration, this doesn't have a lot of content, what's happening?
 
-First, this is a derived image, not directly using the Red Hat base image. This would be how we expect most folks to use image mode for RHEL to create and internally distribute standard operating environments to support applications. The container model of inheritance can be a powerful to when looking to control drift and improve standardization.
+First, this is a derived image, not directly using the Red Hat base image. This would be how we expect most folks to use image mode for RHEL to create and internally distribute standard operating environments to support applications. The container model of inheritance can be a powerful tool when looking to control drift and improve standardization.
 
 Remember the `ADD` directive pulls full directories into the image at build time. So all of the work here is 
 somehow being done in `/usr` or `/etc`, let's see what's in there. You can return to the `Terminal` tab to see the files with the `ls` command below, or use the `Code editor` to review them.
