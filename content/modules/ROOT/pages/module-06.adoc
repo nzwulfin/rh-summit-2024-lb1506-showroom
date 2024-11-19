@@ -50,7 +50,7 @@ ADD usr/ /usr
 
 For an 'advanced` configuration, this doesn't have a lot of content, what's happening?
 
-First, this is a derived image, not directly using the Red Hat base image. This would be how we expect most folks to use image mode for RHEL to create and internally distribute standard operating environments to support applications. Everything that we've done so far will be available in this image as well as what we add now.
+First, this is a derived image, not directly using the Red Hat base image. This would be how we expect most folks to use image mode for RHEL to create and internally distribute standard operating environments to support applications. The container model of inheritance can be a powerful to when looking to control drift and improve standardization.
 
 Remember the `ADD` directive pulls full directories into the image at build time. So all of the work here is 
 somehow being done in `/usr` or `/etc`, let's see what's in there. You can return to the `Terminal` tab to see the files with the `ls` command below, or use the `Code editor` to review them.
@@ -80,8 +80,8 @@ Tags are how `bootc` keeps track of images, which is why each of the previous ch
 
 
 In this exercise, we're going to look at a different way to change what operating system in installed on a host, so this image will get a new tag. 
-Tagging is a powerful but somewhat subjective way to both provide information about an image and to control what's visible to any particular image 
-mode host. Most of that discussion is out of scope for this lab, but we'll explore how to use an alternate image here. 
+
+Tagging is a powerful but somewhat subjective way to both provide information about an image and to control what's visible to any particular image mode host. For example, semantic versioning to track changes, or an environment name to track where images should be deployed. Most of that discussion is out of scope for this lab, but we'll explore how to use a basic alternate image tag here. 
 Remember the format for the `--tag` flag is `<registry>/<repository>:<tag>`.
 
 [source,bash]
