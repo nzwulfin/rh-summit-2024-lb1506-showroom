@@ -60,7 +60,7 @@ Add the following and save the file
 Welcome to the image mode lifestyle!
 ----
 
-Now that we have our new configs, we can add them to the Containerfile and rebuild the image.
+Now that we have our new configs, we can add them to the Containerfile and rebuild the image. While we're at it, that index message is a little bland, let's change that too.
 
 [source,dockerfile]
 ----
@@ -96,18 +96,6 @@ podman push $REGISTRY/bootc
 
 [#update-vm]
 == Updating the virtual machine
-
-[NOTE]
-====
-The last virtual machine you have created during this workshop should still be running. You can check this with
-
-[source,bash]
-----
-virsh --connect qemu:///system list
-----
-
-And the output should the virtual machine called `qcow` as `running`.
-====
 
 Now you can return to the tab labeled `SSH QCOW VM`. If you have been logged out, hit the refresh icon in the right corner of the title bar.
 

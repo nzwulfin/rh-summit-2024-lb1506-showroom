@@ -223,6 +223,8 @@ Pass --all to see loaded but inactive timers, too.
 
 Instead of waiting for this timer to trigger, we can immediately apply the new update and reboot.
 
+TIP: Try searching the bash history for 'bootc update' and adding the new flag. Even though we've rolled back the OS, we still have local user state available.
+
 [source,bash]
 ----
 sudo bootc update --apply

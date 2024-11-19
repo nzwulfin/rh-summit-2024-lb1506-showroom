@@ -47,9 +47,9 @@ RUN systemctl enable httpd.service
 <2> `RUN mkdir -p /usr/ssh` -> create the new keys directory in `/usr`
 <3> `RUN --mount=type=secret,id=SSHPUBKEY cat /run/secrets/SSHPUBKEY .. ` -> mounts the secret passed via build to a file only available at build time, then copies the contents
 
-You can now build the new container image with the following command, note the `--secret` argument. This is the connection to the `RUN` directive 
-in the Containerfile. At build time, `podman` will take the file passed and create a temporary secret which we can mount only during the build process. 
-The `id` of the secret is the filename mounted under `/run/secrets`, which we then can extract the contents for our ssh key.
+You can now build the new container image with the following command, note the `--secret` argument. This is the connection to the `RUN` directive in the Containerfile. At build time, `podman` will take the file passed as `src` and create a temporary secret which we can mount only during the build process. 
+
+The `id` of the secret is also the filename mounted under `/run/secrets`, which we then can extract the contents for our ssh key.
 
 We're also going to use a new tag for this image, like we did in the previous `bootc switch` exercise.
 
@@ -109,6 +109,8 @@ Queued for next boot: $REGISTRY/bootc-auth
 As usual, after the command is done you need to reboot the virtual machine
 for the changes to take effect. Before doing that, please make sure you are logged in to the
 virtual machine and not the hypervisor (the prompt should look like `[lab-user@qcow-vm ~]#`):
+
+TIP: Try searching the bash history for 'reboot' instead of copying from below. Even though we've rolled back the OS, we still have local user state available.
 
 [source,bash]
 ----

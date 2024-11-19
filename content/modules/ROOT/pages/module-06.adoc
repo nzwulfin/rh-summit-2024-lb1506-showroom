@@ -35,6 +35,7 @@ bit of customization and software you've installed previously will be available 
 definition. 
 
 Update the `FROM` line in the Containerfile to reflect the registry host in your lab environment: 
+
 eg `FROM rhel.auwwhe2suwht.instruqt.io:5000/bootc`
 
 [source,dockerfile]
@@ -48,6 +49,8 @@ ADD usr/ /usr
 ----
 
 For an 'advanced` configuration, this doesn't have a lot of content, what's happening?
+
+First, this is a derived image, not directly using the Red Hat base image. This would be how we expect most folks to use image mode for RHEL to create and internally distribute standard operating environments to support applications. Everything that we've done so far will be available in this image as well as what we add now.
 
 Remember the `ADD` directive pulls full directories into the image at build time. So all of the work here is 
 somehow being done in `/usr` or `/etc`, let's see what's in there. You can return to the `Terminal` tab to see the files with the `ls` command below, or use the `Code editor` to review them.
@@ -108,11 +111,14 @@ podman images
 == Switch and test the image
 You can now login to the virtual machine via the `SSH QCOW VM` tab.
 
+NOTE: You may need to click on the refresh icon in the right corner to the tab to log in after the last reboot.
+
 After the new container image has been pushed to the local registry, you can `switch` the bootc image to the WordPress one. This 
 `bootc` command is how we change what image to follow for updates. From here on, any changes made to the orginal `bootc` tagged image 
 would not show up as an available update, only changes to the new `bootc-wp` image.
 
 Replace the string `your-reg-name` below with the value of the environment variable in the `Terminal` tab:
+
 eg `sudo bootc switch rhel.auwwhe2suwht.instruqt.io:5000/bootc-wp`
 [source,bash]
 ----
@@ -133,34 +139,25 @@ After a short wait, you can log back in to the virtual machine via the `SSH QCOW
 [#layers]
 == Troubleshooting layered builds
 
-Check on the status of our newly created quadlet by checking the caddy proxy server. 
+Let's watch our newly created quadlet service start for the first time.
 
 [source,bash]
 ----
-sudo systemctl status caddy.service
+sudo journalctl -f -u caddy
 ----
 
 After the container is pulled and the service attempts to start you will see:
 ....
-Nov 15 19:21:10 localhost.localdomain systemd[1]: Failed to start Caddy Quadlet.
-Nov 15 19:21:10 localhost.localdomain systemd[1]: caddy.service: Scheduled restart job, restart counter is at 7.
-Nov 15 19:21:10 localhost.localdomain systemd[1]: Stopped Caddy Quadlet.
-Nov 15 19:21:10 localhost.localdomain systemd[1]: caddy.service: Start request repeated too quickly.
-Nov 15 19:21:10 localhost.localdomain systemd[1]: caddy.service: Failed with result 'exit-code'.
-Nov 15 19:21:10 localhost.localdomain systemd[1]: Failed to start Caddy Quadlet.
+Nov 19 19:02:59 localhost.localdomain caddy[2367]: Error: cannot listen on the TCP port: listen tcp4 :80: bind: address already in use
+Nov 19 19:02:59 localhost.localdomain systemd[1]: caddy.service: Main process exited, code=exited, status=126/n/a
+Nov 19 19:02:59 localhost.localdomain systemd[1]: caddy.service: Failed with result 'exit-code'.
+Nov 19 19:02:59 localhost.localdomain systemd[1]: Failed to start Caddy Quadlet.
+Nov 19 19:03:00 localhost.localdomain systemd[1]: caddy.service: Scheduled restart job, restart counter is at 7.
+Nov 19 19:03:00 localhost.localdomain systemd[1]: Stopped Caddy Quadlet.
+Nov 19 19:03:00 localhost.localdomain systemd[1]: caddy.service: Start request repeated too quickly.
+Nov 19 19:03:00 localhost.localdomain systemd[1]: caddy.service: Failed with result 'exit-code'.
+Nov 19 19:03:00 localhost.localdomain systemd[1]: Failed to start Caddy Quadlet.
 ....
-
-Check the journal to see why the unit failed.
-[source,bash]
-----
-sudo journalctl -t caddy
-----
-
-....
-Jul 24 14:40:25 qcow-vm caddy[1347]: Error: cannot listen on the TCP port: listen tcp4 :80: 
-Jul 24 14:40:27 qcow-vm caddy[1780]: Error: cannot listen on the TCP port: listen tcp4 :80:
-....
-
 
 We weren't prompted for our sudo password, but it looks like our new caddy server couldn't bind to port 80 
 when it tried to start.  What's going on? The answer to both lies in the image we built from. 
@@ -172,7 +169,7 @@ If we check the status of Apache, we can see that it is indeed running and liste
 sudo systemctl status httpd.service
 ----
 
-If you look at the original Containerfile, you'll recall we set Apache to start at boot:
+If you look at the original Containerfile of the source image, you'll recall we set Apache to start at boot:
 
 [source,dockerfile]
 ----

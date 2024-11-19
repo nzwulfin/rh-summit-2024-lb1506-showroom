@@ -2,8 +2,7 @@ TIP: This workshop uses blocks which contain runnable commands and represent out
 in the upper right corner can be copied and pasted into a terminal window instead of being typed. This is provided as a convenience.
 
 = System setup
-In this lab, you will be cloning the lab helper scripts and preparing
-the host, as well as setting up the required access for Red Hat resources.
+In this step you'll confirm the environment has been appropriately configured for success.
 
 [#login]
 == Red Hat registry login
@@ -14,22 +13,6 @@ To log back into the registry at any time you can use:"
 [source,console]
 ----
 reglogin
-----
-
-
-[#high-level]
-== Preparing the host for container building
-
-In this final part of the setup, you will:
-
-  * download some additional files
-  * finalize the system config
-
-There is a script to do it all for you:
-
-[source,console]
-----
-make setup
 ----
 
 [#status]
