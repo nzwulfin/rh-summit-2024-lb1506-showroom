@@ -26,7 +26,7 @@ In the `Terminal` tab, you will need to have the full registry name to add to th
 echo $REGISTRY
 ----
 
-In the `Code editor` tab file picker, select the `examples/wordpress-quadlet/` directory and then the Containerfile.wp.
+In the `Code editor` tab file picker, select the **examples/wordpress-quadlet/** directory and then the **Containerfile.wp**.
 
 Using container tooling to create images let's us take advantage of layers and inheritance in our standard 
 build process. Different teams and work directly from images built by others, rather than by integrating after 

@@ -42,6 +42,7 @@ vim etc/sudoers.d/wheel
 
 Add the following and save the file
 
+[source,shell]
 ----
 # Enable passwordless sudo for the wheel group
 %wheel        ALL=(ALL)       NOPASSWD: ALL
@@ -56,6 +57,7 @@ vim etc/motd
 
 Add the following and save the file
 
+[source,shell]
 ----
 Welcome to the image mode lifestyle!
 ----

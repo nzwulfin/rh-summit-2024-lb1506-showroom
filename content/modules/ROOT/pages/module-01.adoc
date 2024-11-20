@@ -10,7 +10,7 @@ In this step you'll confirm the environment has been appropriately configured fo
 This lab has already logged into the Red Hat terms based registry, however if there is an issue a convinience command has been created.
 To log back into the registry at any time you can use:"
 
-[source,console]
+[source,bash]
 ----
 reglogin
 ----
@@ -20,7 +20,7 @@ reglogin
 
 One final check before you advance to the next lab. All exercises will be listed in this browser window, there is no additional challenge in the Instruqt UI.
 
-[source,console]
+[source,bash]
 ----
 make status
 ----

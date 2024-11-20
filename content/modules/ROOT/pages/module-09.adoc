@@ -77,6 +77,8 @@ path of the ISO file to the install process. This emulates inserting a phyiscal 
 
 
 NOTE: This will take 3+ minutes to complete
+
+[source,bash]
 ----
 make vm-iso
 ----
@@ -166,10 +168,11 @@ The output should be "Hello Red Hat One 2024!!"
 
 You should also be able to login to the virtual machine via the `SSH ISO VM` tab. 
 
-If the ssh key is not automatically picked up, use the password `lb1506`.
+NOTE: If the ssh key is not automatically picked up, the user password is `lb1506`.
 
 You can now check the status of `bootc`:
 
+[source,bash]
 ----
 sudo bootc status
 ----
@@ -231,11 +234,17 @@ say for disconnected environments or those with intermittent connectivity, we ca
 the locally configured shared locations. A full discussion of transports and their associated uses and configuration is outside 
 the scope of this lab.
 
+To make things easier, create a local `REGISTRY` environment variable in this VM shell using the value from the `Terminal` tab. The value below is an example and will need to match your workshop.
+
+[source,bash]
+----
+export REGISTRY=rhel.xkxn6lavs9ns.instruqt.io:5000
+----
+
+
 To keep with the theme of offline usage, let's simulate updating from the local storage. We can use `skopeo` to copy images from one location to another. 
 In the embedded ISO script, it's used to copy from the registry to be included in the final image. Here, we can use it to copy from 
 the registry to the host. We need to be sure to use `sudo` to copy into the system storage location and not the user's.
-
-NOTE: You will need the value of the `REGISTRY` environment variable from the `Terminal` to subsitute in the commands below.
 
 [source,bash]
 ----
@@ -267,7 +276,9 @@ The last step for the change to take is to reboot the virtual machine. Before do
 sudo systemctl reboot
 ----
 
-In a short time after that command, you should be able to ssh back to the virtual machine via the `SSH ISO VM` tab and check the bootc status:
+Click on the refresh icon in the right corner of the tab to ssh back to the virtual machine and check the bootc status:
+
+NOTE: If the ssh key is not automatically picked up, the user password is `lb1506`.
 
 [source,bash]
 ----
@@ -283,7 +294,7 @@ metadata:
 spec:
   image:
     image: $REGISTRY/bootc
-    transport: containers-storage
+    transport: containers-storage # <1>
   bootOrder: default
 status:
   staged: null
@@ -319,7 +330,7 @@ status:
   type: bootcHost
 ----
 
-In the status you can see `bootc` is now tracking local container storage for updates. Further updates would then be provided on media 
+<1> In the status you can see `bootc` is now tracking local container storage for updates. Further updates would then be provided on media 
 presented to the host, like a USB drive or DVD. You could use skopeo sync a registry repository to media as well as copy it 
 from the media to the local storage on the host. These images are visible to podman as well. 
 

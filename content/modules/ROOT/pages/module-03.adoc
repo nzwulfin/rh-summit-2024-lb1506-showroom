@@ -154,8 +154,8 @@ make vm-qcow
 
 *For reference*, commands executed in the Makefile and displayed in the terminal are:
 
-[source,bash]
-----
+
+....
 cp qcow2/disk.qcow2 /var/lib/libvirt/images/summit/qcow-vm.qcow2
 virt-install --connect qemu:///system \
                 --name qcow \
@@ -168,7 +168,7 @@ virt-install --connect qemu:///system \
                 --noautoconsole \
                 --noreboot
 virsh --connect qemu:///system start qcow
-----
+....
 
 If `make vm-qcow` was successful, you should see the final line of output like this:
 

@@ -253,7 +253,7 @@ Connection to qcow-vm closed.
 
 We can check for our new web page from the `Terminal` tab once the VM has rebooted.
 
-[source,console]
+[source,bash]
 ----
 curl http://qcow
 ----
